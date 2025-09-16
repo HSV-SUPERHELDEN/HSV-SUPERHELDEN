@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>HSV SUPERHELDEN</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka One', cursive;
+      background-color: #0D1B3D; /* HSV Blau */
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .album {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .cover {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 20px 0;
+      font-size: 2em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background-color: #FFFFFF;
+      color: #0D1B3D;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    li:hover {
+      background-color: #0D1B3D;
+      color: #FFFFFF;
+      transform: scale(1.05);
+    }
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+    .play-all {
+      margin: 20px 0;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 15px;
+      background-color: #FFFFFF;
+      color: #0D1B3D;
+      cursor: pointer;
+      font-size: 1.3em;
+      transition: transform 0.2s, background-color 0.2s, color 0.2s;
+    }
+    .play-all:hover {
+      background-color: #0D1B3D;
+      color: #FFFFFF;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="album">
+    <img src="COVER/COVER.JPG" alt="COVER" class="cover">
+    <h1>HSV SUPERHELDEN</h1>
+
+    <button class="play-all" onclick="playAll()">▶ ALLES ABPSIELEN</button>
+
+    <ul id="trackList">
+      <li onclick="playTrack(0)">Die Geburt der HSV-Superhelden</li>
+      <li onclick="playTrack(1)">Kapitel 1 – Nessa: Das Einhorn auf dem Rasen</li>
+      <li onclick="playTrack(2)">Kapitel 2 – Henry: Das verschwundene Tor</li>
+      <li onclick="playTrack(3)">Kapitel 3 – Emmi: Unsichtbar im Spielertunnel</li>
+      <li onclick="playTrack(4)">Kapitel 4 – Amalia: Die Wahrheit im Mikrofon</li>
+      <li onclick="playTrack(5)">Kapitel 5 – Fritz: Das große Pommes-Chaos</li>
+      <li onclick="playTrack(6)">Kapitel 6 – Lasse: Die verschwundene Kugel</li>
+      <li onclick="playTrack(7)">Kapitel 7 – Josie: Der Wind im Stadion</li>
+      <li onclick="playTrack(8)">Kapitel 8 – Milea: Das Herzlicht in der Kabine</li>
+      <li onclick="playTrack(9)">Kapitel 9 – Anna: Die rosa Raute</li>
+      <li onclick="playTrack(10)">Kapitel 10 – Milo: Die Möwenrettung</li>
+      <li onclick="playTrack(11)">Kapitel 11 – Jim: Der Beat gegen Bremen</li>
+      <li onclick="playTrack(12)">Kapitel 12 – Dino Herrmann: Das Geheimnis des Maskottchens</li>
+      <li onclick="playTrack(13)">Noch viele Abenteuer</li>
+    </ul>
+
+    <audio id="audioPlayer" controls></audio>
+  </div>
+
+  <script>
+    const tracks = [
+      "EINLEITUNG/EINLEITUNG FULL.mp3",
+      "KAPITEL 1/KAPITEL 1 FULL.mp3",
+      "KAPITEL 2/KAPITEL 2 FULL.mp3",
+      "KAPITEL 3/KAPITEL 3 FULL.mp3",
+      "KAPITEL 4/KAPITEL 4 FULL.mp3",
+      "KAPITEL 5/KAPITEL 5 FULL.mp3",
+      "KAPITEL 6/KAPITEL 6 FULL.mp3",
+      "KAPITEL 7/KAPITEL 7 FULL.mp3",
+      "KAPITEL 8/KAPITEL 8 FULL.mp3",
+      "KAPITEL 9/KAPITEL 9 FULL.mp3",
+      "KAPITEL 10/KAPITEL 10 FULL.mp3",
+      "KAPITEL 11/KAPITEL 11 FULL.mp3",
+      "KAPITEL 12/KAPITEL 12 FULL.mp3",
+      "SCHLUSS/SCHLUSS FULL.mp3"
+    ];
+
+    const player = document.getElementById("audioPlayer");
+    let current = 0;
+
+    function playTrack(index) {
+      current = index;
+      player.src = tracks[current];
+      player.play();
+    }
+
+    function playAll() {
+      playTrack(0);
+    }
+
+    player.addEventListener("ended", () => {
+      current++;
+      if (current < tracks.length) {
+        playTrack(current);
+      }
+    });
+  </script>
+</body>
+</html>
