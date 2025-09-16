@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Fredoka One', cursive;
-      background-color: #0D1B3D; /* HSV Blau */
+      background-color: #0D1B3D;
       color: #FFFFFF;
       display: flex;
       flex-direction: column;
@@ -74,7 +74,7 @@
 </head>
 <body>
   <div class="album">
-    <img src="COVER/COVER.JPG" alt="COVER" class="cover">
+    <img src="COVER/COVER.jpg" alt="cover" class="cover">
     <h1>HSV SUPERHELDEN</h1>
 
     <button class="play-all" onclick="playAll()">▶ ALLES ABPSIELEN</button>
@@ -96,7 +96,8 @@
       <li onclick="playTrack(13)">Noch viele Abenteuer</li>
     </ul>
 
-    <audio id="audioPlayer" controls></audio>
+    <!-- preload="auto" sorgt für schnelles Laden -->
+    <audio id="audioPlayer" controls preload="auto"></audio>
   </div>
 
   <script>
