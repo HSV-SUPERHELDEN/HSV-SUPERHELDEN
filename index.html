@@ -43,6 +43,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 4em;
+      font-family: Arial, sans-serif; /* sorgt dafür, dass es Text bleibt */
+      color: #FFFFFF;
       pointer-events: none;
     }
 
@@ -168,7 +170,7 @@
       "SCHLUSS/SCHLUSS FULL.mp3"
     ];
 
-    const song = "SONG/SONG FULL.mp3"; // Titelsong
+    const song = "SONG/SONG FULL.mp3";
     const player = document.getElementById("audioPlayer");
     const overlay = document.getElementById("coverOverlay");
     const playAllIcon = document.getElementById("playAllIcon");
@@ -198,10 +200,9 @@
     }
 
     function togglePlayAll() {
-      // Stoppt Cover, falls aktiv
       resetCover();
 
-      if (allPlayState === 0) { // Play
+      if (allPlayState === 0) {
         allPlaying = true;
         player.src = song;
         player.play();
@@ -211,11 +212,11 @@
           playPlaylist(0);
           allPlayState = 2;
         };
-      } else if (allPlayState === 1) { // Stop
+      } else if (allPlayState === 1) {
         player.pause();
         playAllIcon.textContent = "▶";
         allPlayState = 2;
-      } else { // Restart
+      } else {
         player.currentTime = 0;
         player.play();
         playAllIcon.textContent = "❚❚";
@@ -239,7 +240,6 @@
     }
 
     function toggleSong() {
-      // Stoppt Alles-Abspielen, falls aktiv
       resetPlayAll();
 
       if (!songPlaying) {
