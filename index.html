@@ -127,7 +127,7 @@
     <h1>HSV SUPERHELDEN</h1>
 
     <button class="play-all" onclick="togglePlayAll()">
-      <span id="playAllIcon">▶️</span> ALLES ABSPIELEN
+      <span id="playAllIcon">▶</span> ALLES ABSPIELEN
     </button>
 
     <ul id="trackList">
@@ -179,12 +179,12 @@
     let allPlayState = 0;
 
     function resetCover() {
-      overlay.textContent = "▶️";
+      overlay.textContent = "▶";
       songPlaying = false;
     }
 
     function resetPlayAll() {
-      playAllIcon.textContent = "▶️";
+      playAllIcon.textContent = "▶";
       allPlaying = false;
       allPlayState = 0;
     }
@@ -253,7 +253,7 @@
           overlay.textContent = "❚❚";
         } else {
           player.pause();
-          overlay.textContent = "▶️";
+          overlay.textContent = "▶";
         }
       }
     }
