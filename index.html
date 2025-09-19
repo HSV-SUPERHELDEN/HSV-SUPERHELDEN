@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>HSV SUPERHELDEN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
     body {
@@ -14,43 +15,49 @@
       align-items: center;
       padding: 20px;
     }
+
     .album {
       max-width: 600px;
       width: 100%;
       text-align: center;
       position: relative;
     }
+
     .cover-wrapper {
       position: relative;
       width: 100%;
       cursor: pointer;
       margin-bottom: 20px;
     }
+
     .cover {
       width: 100%;
       border-radius: 20px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.6);
       display: block;
     }
+
     .cover-overlay {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 4em;
-      color: rgba(255,255,255,0.8);
       pointer-events: none;
     }
+
     h1 {
       margin: 20px 0 10px 0;
       font-size: 2em;
       text-transform: uppercase;
       text-align: center;
     }
+
     ul {
       list-style: none;
       padding: 0;
     }
+
     li {
       background-color: #FFFFFF;
       color: #0D1B3D;
@@ -61,15 +68,18 @@
       font-size: 1.2em;
       transition: transform 0.2s, background-color 0.2s;
     }
+
     li:hover {
       background-color: #0D1B3D;
       color: #FFFFFF;
       transform: scale(1.05);
     }
+
     audio {
       width: 100%;
       margin-top: 20px;
     }
+
     .play-all {
       margin: 20px auto;
       padding: 15px 30px;
@@ -85,10 +95,25 @@
       gap: 10px;
       transition: transform 0.2s, background-color 0.2s, color 0.2s;
     }
+
     .play-all:hover {
       background-color: #0D1B3D;
       color: #FFFFFF;
       transform: scale(1.05);
+    }
+
+    @media (max-width: 480px) {
+      .cover-overlay {
+        font-size: 3em;
+      }
+      li {
+        font-size: 1em;
+        padding: 12px;
+      }
+      .play-all {
+        font-size: 1.1em;
+        padding: 12px 20px;
+      }
     }
   </style>
 </head>
@@ -96,13 +121,13 @@
   <div class="album">
     <div class="cover-wrapper" onclick="toggleSong()">
       <img src="COVER/COVER.jpg" alt="cover" class="cover">
-      <div class="cover-overlay" id="coverOverlay">▶</div>
+      <div class="cover-overlay" id="coverOverlay">▶️</div>
     </div>
 
     <h1>HSV SUPERHELDEN</h1>
 
     <button class="play-all" onclick="togglePlayAll()">
-      <span id="playAllIcon">▶</span> ALLES ABSPIELEN
+      <span id="playAllIcon">▶️</span> ALLES ABSPIELEN
     </button>
 
     <ul id="trackList">
@@ -143,82 +168,92 @@
       "SCHLUSS/SCHLUSS FULL.mp3"
     ];
 
-    const song = "SONG/SONG FULL.mp3";
+    const song = "SONG/SONG FULL.mp3"; // Titelsong
     const player = document.getElementById("audioPlayer");
     const overlay = document.getElementById("coverOverlay");
     const playAllIcon = document.getElementById("playAllIcon");
 
     let current = 0;
     let songPlaying = false;
-    let playAllState = 0; // 0=stopped, 1=playing, 2=restart
+    let allPlaying = false;
+    let allPlayState = 0;
 
-    // Kapitel abspielen
+    function resetCover() {
+      overlay.textContent = "▶️";
+      songPlaying = false;
+    }
+
+    function resetPlayAll() {
+      playAllIcon.textContent = "▶️";
+      allPlaying = false;
+      allPlayState = 0;
+    }
+
     function playTrack(index) {
       current = index;
       player.src = tracks[current];
       player.play();
-      songPlaying = false;
-      playAllState = 0;
-      overlay.textContent = "▶";
-      playAllIcon.textContent = "▶";
+      resetCover();
+      resetPlayAll();
     }
 
-    // Alles abspielen Button mit 3-Stufen-Logik
     function togglePlayAll() {
-      if (playAllState === 0) { // starten
-        playAllState = 1;
-        player.src = song;
-        player.play();
-        playAllIcon.textContent = "❚❚";
-      } else if (playAllState === 1) { // stoppen
-        player.pause();
-        playAllState = 2;
-        playAllIcon.textContent = "▶";
-      } else { // restart
-        player.src = song;
-        player.play();
-        playAllState = 1;
-        playAllIcon.textContent = "❚❚";
-      }
+      // Stoppt Cover, falls aktiv
+      resetCover();
 
-      player.onended = () => {
-        if (playAllState === 1) {
-          playTrackPlaylist(0);
-        }
-      };
+      if (allPlayState === 0) { // Play
+        allPlaying = true;
+        player.src = song;
+        player.play();
+        playAllIcon.textContent = "❚❚";
+        allPlayState = 1;
+        player.onended = () => {
+          playPlaylist(0);
+          allPlayState = 2;
+        };
+      } else if (allPlayState === 1) { // Stop
+        player.pause();
+        playAllIcon.textContent = "▶️";
+        allPlayState = 2;
+      } else { // Restart
+        player.currentTime = 0;
+        player.play();
+        playAllIcon.textContent = "❚❚";
+        allPlayState = 1;
+      }
     }
 
-    function playTrackPlaylist(index) {
+    function playPlaylist(index) {
       current = index;
       player.src = tracks[current];
       player.play();
+      playAllIcon.textContent = "❚❚";
       player.onended = () => {
         current++;
         if (current < tracks.length) {
-          playTrackPlaylist(current);
+          playPlaylist(current);
         } else {
-          playAllState = 0;
-          playAllIcon.textContent = "▶";
+          resetPlayAll();
         }
       };
     }
 
-    // Nur Song abspielen (Cover)
     function toggleSong() {
+      // Stoppt Alles-Abspielen, falls aktiv
+      resetPlayAll();
+
       if (!songPlaying) {
-        playAllState = 0;
         player.src = song;
         player.play();
-        songPlaying = true;
         overlay.textContent = "❚❚";
-        playAllIcon.textContent = "▶";
+        songPlaying = true;
       } else {
         if (player.paused) {
           player.play();
           overlay.textContent = "❚❚";
         } else {
           player.pause();
-          overlay.textContent = "▶";
+          overlay.textContent = "▶️";
         }
       }
     }
